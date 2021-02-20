@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/WebHeroSchool/assembly-kd/issues"
   },
-  "homepage": "https://github.com/WebHeroSchool/assembly-kd#readme"
+  "homepage": "https://github.com/WebHeroSchool/assembly-kd#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
 }
