@@ -7,5 +7,8 @@ gupl.task('copyCss', () => {
 
 gulp.task('copyJs', () => {
     return gulp.src(['scripts/*.js'])
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
         .pipe(gulp.dest('build/js'));
-})
+});
