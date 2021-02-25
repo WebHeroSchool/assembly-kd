@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "hello": "echo 'hello'",
     "createBuild": "mkdir build",
-    "deleteBuild": "rm -rf build"
+    "deleteBuild": "rm -rf build",
+    "gulp": "gulp"
   },
   "repository": {
     "type": "git",
