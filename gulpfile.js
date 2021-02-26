@@ -4,6 +4,7 @@ const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const cssnano = require('gulp-cssnano');
 const sourcemaps = require('gulp-sourcemaps');
+const browserSync = require('browser-sync').create();
 
 const paths = {
     src: {
@@ -43,7 +44,16 @@ gulp.task('build-js', () => {
 
 gulp.task('build', ['build-css', 'build-js']);
 
-gulp.task('watch', () => {
-    gulp.watch(paths.src.styles, ['build-css']);
-    gulp.watch(paths.src.scripts, ['build-js']);
-})
+gulp.task('browser-sync', () => {
+    browserSync.init({
+        server: {
+            baseDir: './'
+        }
+    });
+
+    gulp.watch(paths.src.styles, ['css-watch']);
+    gulp.watch(paths.src.scripts, ['js-watch']);
+});
+
+gulp.task('css-watch', ['css'], () => browserSync.reload());
+gulp.task('js-watch', ['js'], () => browserSync.reload());
