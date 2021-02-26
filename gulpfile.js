@@ -1,7 +1,10 @@
+const env = require('gulp-env');
+const clean = require('gulp-clean');
 const gulp = require('gulp');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
+const gulpif = require('gulp-if');
 const cssnano = require('gulp-cssnano');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
@@ -19,13 +22,23 @@ const paths = {
         styles: 'index.min.css',
         scripts: 'index.min.js'
     }
-}
+};
+
+env({
+    file: '.env',
+    type: 'ini',
+});
+
+gulp.task('clean', () => {
+    gulp.src('build', {read: false})
+        .pipe(clean());
+});
 
 gulp.task('build-css', () => {
     return gulp.src([paths.src.styles])
         .pipe(sourcemaps.init())
             .pipe(contact(paths.buildNames.styles))
-            .pipe(cssnano())
+            .pipe(gulpif(process.env.NODE_ENV === 'production', cssnano())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.build.styles));
 });
@@ -37,7 +50,7 @@ gulp.task('build-js', () => {
             .pipe(babel({
                 presets: ['@babel/env']
             }))
-            .pipe(uglify())
+            .pipe(gulpif(process.env.NODE_ENV === 'production', uglify())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest(paths.build.scripts));
 });
@@ -58,5 +71,6 @@ gulp.task('browser-sync', () => {
 gulp.task('css-watch', ['css'], () => browserSync.reload());
 gulp.task('js-watch', ['js'], () => browserSync.reload());
 
+gulp.task('default', ['build']);
 gulp.task('prod', ['build']);
 gulp.task('dev', ['build', 'browser-sync']);
